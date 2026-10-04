@@ -1,0 +1,82 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function ownsData(data) {
+      return isSignedIn() && data.adminId == request.auth.uid;
+    }
+
+    function canCreate() {
+      return isSignedIn() && request.resource.data.adminId == request.auth.uid;
+    }
+
+    function canUpdate() {
+      return isSignedIn() && (
+        (
+          resource.data.adminId == request.auth.uid &&
+          request.resource.data.adminId == resource.data.adminId
+        ) ||
+        (
+          (resource.data.adminId == null || resource.data.adminId == '') &&
+          request.resource.data.adminId == request.auth.uid
+        )
+      );
+    }
+
+    match /admin_profiles/{adminId} {
+      allow read: if isSignedIn() && request.auth.uid == adminId;
+      allow create: if isSignedIn() && request.auth.uid == adminId && request.resource.data.adminId == adminId;
+      allow update: if isSignedIn() && request.auth.uid == adminId && request.resource.data.adminId == adminId;
+      allow delete: if isSignedIn() && request.auth.uid == adminId;
+    }
+
+    match /products/{productId} {
+      allow read: if ownsData(resource.data);
+      allow create: if canCreate();
+      allow update: if canUpdate();
+      allow delete: if ownsData(resource.data);
+    }
+
+    match /clients/{clientId} {
+      allow read: if ownsData(resource.data);
+      allow create: if canCreate();
+      allow update: if canUpdate();
+      allow delete: if ownsData(resource.data);
+    }
+
+    match /sales/{saleId} {
+      allow read: if ownsData(resource.data);
+      allow create: if canCreate();
+      allow update: if canUpdate();
+      allow delete: if ownsData(resource.data);
+    }
+
+    match /expenses/{expenseId} {
+      allow read: if ownsData(resource.data);
+      allow create: if canCreate();
+      allow update: if canUpdate();
+      allow delete: if ownsData(resource.data);
+    }
+
+    match /suppliers/{supplierId} {
+      allow read: if ownsData(resource.data);
+      allow create: if canCreate();
+      allow update: if canUpdate();
+      allow delete: if ownsData(resource.data);
+    }
+
+    match /invoices/{invoiceId} {
+      allow read: if ownsData(resource.data);
+      allow create: if canCreate();
+      allow update: if canUpdate();
+      allow delete: if ownsData(resource.data);
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

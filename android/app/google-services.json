@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "610565065530",
+    "project_id": "appligestion-14aa3",
+    "storage_bucket": "appligestion-14aa3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610565065530:android:27c5aa1425aaf67aadde03",
+        "android_client_info": {
+          "package_name": "com.example.appligestion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDp2qQrOPMNDOjPgSKQuSQl77LXOp8HJRY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
